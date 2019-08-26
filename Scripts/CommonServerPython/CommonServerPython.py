@@ -777,6 +777,7 @@ def tableToMarkdown(name, t, headers=None, headerTransform=None, removeNull=Fals
     """
 
     mdResult = ''
+
     if name:
         mdResult = '### ' + name + '\n'
 
