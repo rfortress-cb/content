@@ -619,12 +619,12 @@ def execute_testing(server, server_ip, server_version, server_numeric_version, i
         # print(test_index)
         # test_index += 1
 
-        test_manager.run_mock_tests(mock_tests)
-        print("\nRunning mock-disabled tests")
-        proxy.configure_proxy_in_demisto('')
-        print("Restarting demisto service")
-        restart_demisto_service(ami, c)
-        print("Demisto service restarted\n")
+        # test_manager.run_mock_tests(mock_tests)
+        # print("\nRunning mock-disabled tests")
+        # proxy.configure_proxy_in_demisto('')
+        # print("Restarting demisto service")
+        # restart_demisto_service(ami, c)
+        # print("Demisto service restarted\n")
 
     # for t in mockless_tests:
     # run_test_scenario(t, c, proxy, default_test_timeout, skipped_tests_conf, nightly_integrations,
@@ -808,6 +808,9 @@ class TestManager(object):
 
     def run_mockless_tests(self, test_list):
         non_parallel_tests, parallel_tests = TestManager.classify_tests(test_list)
+        print("Number of all non-mockable tests : {}".format(len(test_list)))
+        print("Number of non-parallel tests : {}".format(len(non_parallel_tests)))
+        print("Number of all parallel tests : {}".format(len(parallel_tests)))
         self.run_serial_tests(non_parallel_tests)
         self.run_parallel_test(parallel_tests)
 
