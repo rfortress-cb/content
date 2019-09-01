@@ -417,7 +417,7 @@ def run_test_scenario(t, c, proxy, default_test_timeout, skipped_tests_conf, nig
                       filtered_tests, skipped_tests, demisto_api_key, secret_params, failed_playbooks,
                       unmockable_integrations, succeed_playbooks, slack, circle_ci, build_number, server, build_name,
                       server_numeric_version, is_ami=True):
-    start = time()
+    start = datetime.time()
     playbook_id = t['playbookID']
     nightly_test = t.get('nightly', False)
     integrations_conf = t.get('integrations', [])
@@ -491,7 +491,7 @@ def run_test_scenario(t, c, proxy, default_test_timeout, skipped_tests_conf, nig
              succeed_playbooks, test_message, test_options, slack, circle_ci,
              build_number, server, build_name, is_ami)
 
-    end = time()
+    end = datetime.time()
     running_time = end - start
     print("Playbook {} was running: {}".format(playbook_id, running_time))
 
@@ -625,19 +625,19 @@ def execute_testing(server, server_ip, server_version, server_numeric_version, i
     # test_index += 1
 
     # test_manager.run_mock_tests(mock_tests)
-    # print("\nRunning mock-disabled tests")
-    # proxy.configure_proxy_in_demisto('')
-    # print("Restarting demisto service")
-    # restart_demisto_service(ami, c)
-    # print("Demisto service restarted\n")
+    print("\nRunning mock-disabled tests")
+    proxy.configure_proxy_in_demisto('')
+    print("Restarting demisto service")
+    restart_demisto_service(ami, c)
+    print("Demisto service restarted\n")
 
-    for t in mockless_tests:
-        run_test_scenario(t, c, proxy, default_test_timeout, skipped_tests_conf, nightly_integrations,
-                          skipped_integrations_conf, skipped_integration, is_nightly, run_all_tests,
-                          is_filter_configured,
-                          filtered_tests, skipped_tests, demisto_api_key, secret_params, failed_playbooks,
-                          unmockable_integrations, succeed_playbooks, slack, circle_ci, build_number, server,
-                          build_name, server_numeric_version, is_ami)
+    # for t in mockless_tests:
+    #     run_test_scenario(t, c, proxy, default_test_timeout, skipped_tests_conf, nightly_integrations,
+    #                       skipped_integrations_conf, skipped_integration, is_nightly, run_all_tests,
+    #                       is_filter_configured,
+    #                       filtered_tests, skipped_tests, demisto_api_key, secret_params, failed_playbooks,
+    #                       unmockable_integrations, succeed_playbooks, slack, circle_ci, build_number, server,
+    #                       build_name, server_numeric_version, is_ami)
     # if test_index % 10 == 0:
     # stdout, stderr = get_docker_processes_data()
     # text = stdout if not stderr else stderr
@@ -645,7 +645,7 @@ def execute_testing(server, server_ip, server_version, server_numeric_version, i
     # print(test_index)
     # test_index += 1
 
-    # test_manager.run_mockless_tests(mockless_tests)
+    test_manager.run_mockless_tests(mockless_tests)
     print_test_summary(succeed_playbooks, failed_playbooks, skipped_tests, skipped_integration, unmockable_integrations,
                        proxy, is_ami)
 
@@ -684,6 +684,7 @@ class TestManager(object):
         self._pool_size = self.POOL_SIZE
 
     def run_test_scenario(self, test):
+        start = time()
         playbook_id = test['playbookID']
         nightly_test = test.get('nightly', False)
         integrations_conf = test.get('integrations', [])
@@ -752,6 +753,10 @@ class TestManager(object):
                  playbook_id,
                  self.succeed_playbooks, test_message, test_options, self.slack, self.circle_ci,
                  self.build_number, self.server, self.build_name, self.is_ami)
+
+        end = time()
+        running_time = end - start
+        print("The playbook {} was running: {} seconds".format(playbook_id, running_time))
 
     def run_serial_tests(self, test_list):
         for test in test_list:
