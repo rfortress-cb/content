@@ -417,6 +417,7 @@ def run_test_scenario(t, c, proxy, default_test_timeout, skipped_tests_conf, nig
                       filtered_tests, skipped_tests, demisto_api_key, secret_params, failed_playbooks,
                       unmockable_integrations, succeed_playbooks, slack, circle_ci, build_number, server, build_name,
                       server_numeric_version, is_ami=True):
+    start = datetime.time()
     playbook_id = t['playbookID']
     nightly_test = t.get('nightly', False)
     integrations_conf = t.get('integrations', [])
@@ -489,6 +490,10 @@ def run_test_scenario(t, c, proxy, default_test_timeout, skipped_tests_conf, nig
     run_test(c, proxy, failed_playbooks, integrations, unmockable_integrations, playbook_id,
              succeed_playbooks, test_message, test_options, slack, circle_ci,
              build_number, server, build_name, is_ami)
+
+    end = datetime.time()
+    running_time = end - start
+    print("Playbook {} was running: {}".format(playbook_id, running_time))
 
 
 def restart_demisto_service(ami, c):
