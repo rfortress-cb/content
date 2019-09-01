@@ -7,7 +7,7 @@ import argparse
 import requests
 import subprocess
 from itertools import chain
-from time import sleep
+from time import sleep, time
 from datetime import datetime
 from multiprocessing.pool import ThreadPool
 
@@ -417,7 +417,7 @@ def run_test_scenario(t, c, proxy, default_test_timeout, skipped_tests_conf, nig
                       filtered_tests, skipped_tests, demisto_api_key, secret_params, failed_playbooks,
                       unmockable_integrations, succeed_playbooks, slack, circle_ci, build_number, server, build_name,
                       server_numeric_version, is_ami=True):
-    start = datetime.time()
+    start = time()
     playbook_id = t['playbookID']
     nightly_test = t.get('nightly', False)
     integrations_conf = t.get('integrations', [])
@@ -491,7 +491,7 @@ def run_test_scenario(t, c, proxy, default_test_timeout, skipped_tests_conf, nig
              succeed_playbooks, test_message, test_options, slack, circle_ci,
              build_number, server, build_name, is_ami)
 
-    end = datetime.time()
+    end = time()
     running_time = end - start
     print("Playbook {} was running: {}".format(playbook_id, running_time))
 
