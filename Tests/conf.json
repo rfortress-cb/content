@@ -1868,7 +1868,7 @@
         "RedCanary": "License expired",
         "LogRhythm": "Need to fix SOAP api",
         "ANYRUN": "No instance",
-        "Snowflake": "Looks like account expired, needs looking into",
+        "Snowflake": "No instance (Issue 16572)",
         "Cisco Spark": "No instance",
         "Minerva Labs Anti-Evasion Platform": "No instance",
         "Phish.AI": "Unauthorized. will be re-branded soon as Cofense",
