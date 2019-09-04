@@ -194,8 +194,6 @@ tasks:
         simple: ${inputs.OS}
       right:
         simple: windows
-    results:
-    - AreValuesEqual
     separatecontext: false
     view: |-
       {
