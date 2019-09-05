@@ -19,6 +19,7 @@ BASE_URL: str = demisto.params()['url'][:-1] if demisto.params()['url'].endswith
     else demisto.params()['url']
 FETCH_TIME_DEFAULT = '3 days'
 FETCH_TIME: str = demisto.params().get('fetch_time', FETCH_TIME_DEFAULT).strip()
+PROXIES = handle_proxy()
 
 ''' HELPER FUNCTIONS '''
 
@@ -272,7 +273,8 @@ def http_request(method: str, url_suffix: str, params: Dict = None, data: Union[
             verify=USE_SSL,
             params=params,
             data=data,
-            headers=headers
+            headers=headers,
+            proxies=PROXIES
         )
         # Handle error responses gracefully
         if res.status_code not in {200, 201} and not continue_err:
@@ -733,7 +735,6 @@ def main():
         'fetch-incidents': fetch_incidents,
     }
     try:
-        handle_proxy()
         commands[demisto.command()]()
 
     # Log exceptions
